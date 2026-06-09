@@ -40,3 +40,21 @@ We use a two-branch workflow:
 - **`main`**: The production branch, automatically deployed to the Production Vercel URL.
 - **`development`**: The default working branch, deployed to a stable Preview Vercel URL.
 - Feature branches are created off `development` and merged via Pull Requests. `main` only receives merges from `development` once features are stable.
+
+## Test Credentials
+To quickly log in to the live Vercel deployments, you can use these seeded credentials:
+- **Email:** 123123@gmail.com
+- **Password:** 123456
+
+## Trade-offs & Shortcuts
+Given the 8-10 hour time budget for this hiring challenge, the following tradeoffs were made:
+- **Email Delivery:** The Edge Function securely validates permissions and records the member invitation in the database with an `invited` status. Did not integrate an external SMTP provider (e.g., Resend) to send actual emails.
+- **End-to-End Testing:** Skipped automated Playwright tests in favour of manual testing to stay within the time budget.
+- **UI Components:** Implemented accessible Tailwind UI components directly instead of relying on the `shadcn` CLI.
+
+## What I'd Do With Another Day
+- **Real email sending:** Wire the `invite-member` Edge Function up to an SMTP provider like Resend so invited members actually receive an email with a sign-up link.
+- **Invitation acceptance flow:** Build the page where an invited user clicks the link in their email, signs up, and has their `organization_members` row automatically linked to their new `auth.users` ID with the status updated from `invited` to `active`.
+- **End-to-end tests:** Add a Playwright test covering the full flow: sign-in → create organization → invite member → verify member appears in the list.
+- **Search & filter:** Add a search bar on the Organization Directory so admins can quickly find organizations by name or type.
+- **Separate dev/prod Supabase projects:** Set up two isolated Supabase projects (one for `development`, one for `main`) so testing never pollutes production data.
